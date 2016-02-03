@@ -1,9 +1,9 @@
 # vertx
 Exploring Vertx and RAML.
 
-1) Creates a HTTP connection for the RAML file defined.
-2) Reads the contents of the RAML file and creates mock web services for the path defined in RAML.
-3) Finally, returns the example provided in the RAML as the output.
+1) Creates a HTTP connection for the RAML file defined.<br />
+2) Reads the contents of the RAML file and creates mock web services for the path defined in RAML.<br />
+3) Finally, returns the example provided in the RAML as the output.<br />
 
 
 Add below repo and profiles in your .m2/settings.xml for downloading raml parsers
