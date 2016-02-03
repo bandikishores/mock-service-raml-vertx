@@ -11,12 +11,6 @@ import io.vertx.core.http.HttpServerRequest;
 
 public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 	
-	HashMap<String, ResponseData> cacheofRAML;
-
-	public HttpRequestResponseHandler(HashMap<String, ResponseData> cacheofRAML2) {
-		this.cacheofRAML = cacheofRAML2;
-	}
-
 	@Override
 	public void handle(HttpServerRequest request) {
 		System.out.println("incoming request!");
@@ -35,7 +29,7 @@ public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 			});*/
 		}
 		
-		HttpResponseHandler httpResponseHandler = new HttpResponseHandler(request, cacheofRAML);
+		HttpResponseHandler httpResponseHandler = new HttpResponseHandler(request);
 		httpResponseHandler.createResponse();
 		httpResponseHandler.close();
 	}

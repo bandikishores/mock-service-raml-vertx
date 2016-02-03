@@ -39,11 +39,9 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
 
-public class MyVerticle extends AbstractVerticle {
+public class HttpVerticle extends AbstractVerticle {
 
 	private HttpServer httpServer = null;
-
-	private HashMap<String, ResponseData> cacheofRAML = new HashMap<String, ResponseData>();
 
 	@Override
 	public void start(Future<Void> startFuture) {
@@ -51,36 +49,12 @@ public class MyVerticle extends AbstractVerticle {
 
 		httpServer = vertx.createHttpServer();
 
-		processRAML();
+		RAMLParser ramlParser = new RAMLParser();
+		ramlParser.processRAML();
 
-		httpServer.requestHandler(new HttpRequestResponseHandler(cacheofRAML));
+		httpServer.requestHandler(new HttpRequestResponseHandler());
 
 		httpServer.listen(Constants.PORT);
-	}
-
-	private void processRAML() {
-		List<Path> pathToFiles = Utils.getRAMLFilesPath();
-
-		if (CollectionUtils.isNotEmpty(pathToFiles)) {
-			for (Path path : pathToFiles) {
-				String ramlLocation = path.toUri().toString();
-
-				if (Validator.isValidRAML(ramlLocation)) {
-					Raml raml = new RamlDocumentBuilder().build(ramlLocation);
-
-					if (raml != null) {
-						RAMLParser ramlParser = new RAMLParser(cacheofRAML);
-						ramlParser.parse(raml);
-					} else {
-						Logger.log(" Documentation not present for RAML to load example");
-					}
-				} else {
-					Logger.log("Couldn't load raml at " + ramlLocation);
-				}
-			}
-		} else {
-			Logger.log("No RAMLs found");
-		}
 	}
 
 	@Override

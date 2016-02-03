@@ -1,26 +1,51 @@
 package com.bandi.raml;
 
+import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.raml.model.Action;
 import org.raml.model.ActionType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.Response;
+import org.raml.parser.visitor.RamlDocumentBuilder;
 
+import com.bandi.cache.RAMLCache;
 import com.bandi.data.ResponseData;
 import com.bandi.log.Logger;
+import com.bandi.util.Utils;
+import com.bandi.validate.Validator;
 
 public class RAMLParser {
 
-	private HashMap<String, ResponseData> cacheofRAML;
+	public void processRAML() {
+		List<Path> pathToFiles = Utils.getRAMLFilesPath();
 
-	public RAMLParser(HashMap<String, ResponseData> cacheofRAML) {
-		this.cacheofRAML = cacheofRAML;
+		if (CollectionUtils.isNotEmpty(pathToFiles)) {
+			for (Path path : pathToFiles) {
+				String ramlLocation = path.toUri().toString();
+
+				if (Validator.isValidRAML(ramlLocation)) {
+					Raml raml = new RamlDocumentBuilder().build(ramlLocation);
+
+					if (raml != null) {
+						parse(raml);
+					} else {
+						Logger.log(" Documentation not present for RAML to load example");
+					}
+				} else {
+					Logger.log("Couldn't load raml at " + ramlLocation);
+				}
+			}
+		} else {
+			Logger.log("No RAMLs found");
+		}
 	}
 
 	public void parse(Raml raml) {
@@ -41,7 +66,7 @@ public class RAMLParser {
 											responseData.setResponseContentType(contentType);
 											responseData.setMimeType(response.getBody().get(contentType));
 
-											cacheofRAML.put(resource.getUri(), responseData);
+											RAMLCache.insertInToCache(resource.getUri(), responseData);
 											break;
 										}
 
@@ -55,7 +80,7 @@ public class RAMLParser {
 				}
 			}
 
-			Logger.log(cacheofRAML.toString());
+			RAMLCache.printValuesInCache();
 		} else {
 			Logger.log("No resources found in RAML file " + raml.getTitle());
 		}

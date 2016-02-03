@@ -6,6 +6,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.httpclient.HttpStatus;
 
+import com.bandi.cache.RAMLCache;
 import com.bandi.data.ResponseData;
 
 import io.vertx.core.http.HttpServerRequest;
@@ -14,19 +15,17 @@ import io.vertx.core.http.HttpServerResponse;
 public class HttpResponseHandler {
 
 	private HttpServerRequest request;
-	HashMap<String, ResponseData> cacheofRAML;
 
-	public HttpResponseHandler(HttpServerRequest request, HashMap<String, ResponseData> cacheofRAML2) {
+	public HttpResponseHandler(HttpServerRequest request) {
 		this.request = request;
-		this.cacheofRAML = cacheofRAML2;
 	}
 
 	public void createResponse() {
 
 		HttpServerResponse response = request.response();
 
-		if (request.uri() != null && cacheofRAML.containsKey(request.uri())) {
-			ResponseData responseData = cacheofRAML.get(request.uri());
+		if (request.uri() != null && RAMLCache.presentInCache(request.uri())) {
+			ResponseData responseData = RAMLCache.getResponseDataFromCache(request.uri());
 			response.setStatusCode(HttpStatus.SC_OK);
 			response.headers().add("Content-Type", responseData.getResponseContentType());
 
