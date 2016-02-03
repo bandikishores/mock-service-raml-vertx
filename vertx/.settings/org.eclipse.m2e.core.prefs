@@ -1,4 +1,4 @@
-activeProfiles=
+activeProfiles=inmobi-dev-profile, default-maven, Mule
 eclipse.preferences.version=1
 resolveWorkspaceProjects=true
 version=1

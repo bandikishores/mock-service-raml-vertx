@@ -9,9 +9,9 @@ public class VertxMain {
 		 Vertx vertx = Vertx.vertx();
 	     vertx.deployVerticle(new MyVerticle());
 	     
-	     vertx.deployVerticle(new MyVerticle(), stringAsyncResult -> {
+	    /* vertx.deployVerticle(new MyVerticle(), stringAsyncResult -> {
 	         System.out.println("BasicVerticle deployment complete");
-	     });
+	     });*/
 	}
 
 }
