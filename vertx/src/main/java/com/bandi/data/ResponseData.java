@@ -1,5 +1,6 @@
 package com.bandi.data;
 
+import org.raml.model.ActionType;
 import org.raml.model.MimeType;
 
 import lombok.AllArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.Data;
 public class ResponseData {
 	
 	String responseContentType;
+	
+	ActionType actionType;
 	
 	MimeType mimeType;
 

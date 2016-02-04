@@ -6,6 +6,16 @@ Exploring Vertx and RAML.
 3) Finally, returns the example provided in the RAML as the output.<br />
 
 
+
+To start the service using command prompt
+java -jar <Path To Jar> [Folder Path where RAMLs are present]
+
+Option:
+	Folder Path for RAML - This is optional.
+
+Ex : java -jar vertx/target/vertx-jar-with-dependencies.jar /home/kishore/mygit/vertx/vertx/src/main/resources/raml/
+
+
 Add below repo and profiles in your .m2/settings.xml for downloading raml parsers
 
 	<repository>

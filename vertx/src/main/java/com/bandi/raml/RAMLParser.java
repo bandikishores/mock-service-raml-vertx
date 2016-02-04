@@ -11,6 +11,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.raml.model.Action;
 import org.raml.model.ActionType;
+import org.raml.model.MimeType;
 import org.raml.model.Raml;
 import org.raml.model.Resource;
 import org.raml.model.Response;
@@ -59,22 +60,14 @@ public class RAMLParser {
 							Map<String, Response> responses = action.getResponses();
 							if (MapUtils.isNotEmpty(responses)) {
 								for (Response response : responses.values()) {
-									if (MapUtils.isNotEmpty(response.getBody())) {
-										// response.getBody().get(MediaType.APPLICATION_JSON).getExample();
-										for (String contentType : response.getBody().keySet()) {
-											ResponseData responseData = new ResponseData();
-											responseData.setResponseContentType(contentType);
-											responseData.setMimeType(response.getBody().get(contentType));
-
-											RAMLCache.insertInToCache(resource.getUri(), responseData);
-											break;
-										}
-
-									} else
-										Logger.log("Media type body found was not belonging to "
-												+ MediaType.APPLICATION_JSON);
+									insertExampleToCache(resource.getUri(), actionType, response.getBody());
 								}
 							}
+						} else if (ActionType.POST.equals(actionType)) {
+							Action action = resource.getAction(actionType);
+							insertExampleToCache(resource.getUri(), actionType, action.getBody());
+						} else {
+							Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
 						}
 					}
 				}
@@ -83,6 +76,25 @@ public class RAMLParser {
 			RAMLCache.printValuesInCache();
 		} else {
 			Logger.log("No resources found in RAML file " + raml.getTitle());
+		}
+	}
+
+	private void insertExampleToCache(String uri, ActionType actionType, Map<String, MimeType> body) {
+
+		if (MapUtils.isNotEmpty(body)) {
+			// response.getBody().get(MediaType.APPLICATION_JSON).getExample();
+			for (String contentType : body.keySet()) {
+				ResponseData responseData = new ResponseData();
+				responseData.setResponseContentType(contentType);
+				responseData.setMimeType(body.get(contentType));
+				responseData.setActionType(actionType);
+
+				RAMLCache.insertInToCache(uri, responseData);
+				break;
+			}
+
+		} else {
+			Logger.log("response body not found");
 		}
 	}
 

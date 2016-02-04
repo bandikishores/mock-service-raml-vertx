@@ -5,11 +5,14 @@ import java.util.HashMap;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.httpclient.HttpStatus;
+import org.raml.model.ActionType;
 
 import com.bandi.cache.RAMLCache;
 import com.bandi.data.ResponseData;
 import com.bandi.util.Constants;
+import com.bandi.util.Utils;
 
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 
@@ -24,9 +27,10 @@ public class HttpResponseHandler {
 	public void createResponse() {
 
 		HttpServerResponse response = request.response();
+		ActionType actionType = Utils.convertHttpMethodToActionType(request.method());
 
-		if (request.uri() != null && RAMLCache.presentInCache(request.uri())) {
-			ResponseData responseData = RAMLCache.getResponseDataFromCache(request.uri());
+		if (request.uri() != null && RAMLCache.presentInCache(request.uri(), actionType)) {
+			ResponseData responseData = RAMLCache.getResponseDataFromCache(request.uri(), actionType);
 			response.setStatusCode(HttpStatus.SC_OK);
 			response.headers().add("Content-Type", responseData.getResponseContentType());
 
@@ -43,7 +47,6 @@ public class HttpResponseHandler {
 			response.write(NOT_FOUND);
 		}
 		response.end();
-
 	}
 
 	public void close() {
