@@ -9,6 +9,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.bandi.log.Logger;
 import com.bandi.main.VertxMain;
 
@@ -16,14 +18,21 @@ public class Utils {
 
 	public static List<Path> getRAMLFilesPath() {
 		List<Path> pathToFiles = null;
+		String ramlFolderPath = System.getProperty(Constants.RAML_FOLDER);
 		try {
-			Enumeration<URL> urls = VertxMain.class.getClassLoader().getResources(Constants.ramlLocation);
+			if (StringUtils.isBlank(ramlFolderPath)) {
+				Enumeration<URL> urls = VertxMain.class.getClassLoader().getResources(Constants.ramlLocation);
 
-			if (urls != null && urls.hasMoreElements()) {
-				URL url = urls.nextElement();
-				pathToFiles = Files.walk(Paths.get(url.getPath())).filter(Files::isRegularFile)
-						.collect(Collectors.toList());
+				if (urls != null && urls.hasMoreElements()) {
+					URL url = urls.nextElement();
+					ramlFolderPath = url.getPath();
+				}
 			}
+			if (StringUtils.isNotBlank(ramlFolderPath))
+				pathToFiles = Files.walk(Paths.get(ramlFolderPath)).filter(Files::isRegularFile)
+						.collect(Collectors.toList());
+			else
+				Logger.log("Couldn't find a valid raml folder to load RAMLs");
 		} catch (IOException e) {
 			Logger.log(e);
 		}

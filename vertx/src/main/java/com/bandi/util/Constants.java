@@ -6,6 +6,10 @@ public class Constants {
 	
 	public static final String ramlLocation = "raml/";
 	
+	public static final String ADMIN = "admin";
+
+	public static final String ROOT = "/";
 	
+	public static final String RAML_FOLDER = "ramlFolder";
 
 }

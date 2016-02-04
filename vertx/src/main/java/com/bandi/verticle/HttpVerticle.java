@@ -29,6 +29,7 @@ import org.yaml.snakeyaml.Yaml;
 
 import com.bandi.data.ResponseData;
 import com.bandi.http.HttpRequestResponseHandler;
+import com.bandi.http.HttpRoutingContext;
 import com.bandi.log.Logger;
 import com.bandi.raml.RAMLParser;
 import com.bandi.util.Constants;
@@ -38,23 +39,29 @@ import com.bandi.validate.Validator;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpServer;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.StaticHandler;
 
 public class HttpVerticle extends AbstractVerticle {
-
-	private HttpServer httpServer = null;
 
 	@Override
 	public void start(Future<Void> startFuture) {
 		Logger.log("MyVerticle started!");
 
-		httpServer = vertx.createHttpServer();
+		HttpServer httpServer = vertx.createHttpServer();
 
 		RAMLParser ramlParser = new RAMLParser();
 		ramlParser.processRAML();
+		
+		Router router = Router.router(vertx);
+		router.get(Constants.ROOT + Constants.ADMIN).handler(StaticHandler.create());
+		router.route().handler(new HttpRoutingContext());
+		//httpServer.requestHandler(router::accept);
+		
+		//httpServer.requestHandler(new HttpRequestResponseHandler());
 
-		httpServer.requestHandler(new HttpRequestResponseHandler());
-
-		httpServer.listen(Constants.PORT);
+		//httpServer.listen(Constants.PORT);
+		httpServer.requestHandler(router::accept).listen(Constants.PORT);
 	}
 
 	@Override
