@@ -28,9 +28,11 @@ public class HttpResponseHandler {
 
 		HttpServerResponse response = request.response();
 		ActionType actionType = Utils.convertHttpMethodToActionType(request.method());
+		
+		String uri = Utils.convertURLToString(request.uri()); 
 
-		if (request.uri() != null && RAMLCache.presentInCache(request.uri(), actionType)) {
-			ResponseData responseData = RAMLCache.getResponseDataFromCache(request.uri(), actionType);
+		if (uri != null && RAMLCache.presentInCache(uri, actionType)) {
+			ResponseData responseData = RAMLCache.getResponseDataFromCache(uri, actionType);
 			response.setStatusCode(HttpStatus.SC_OK);
 			response.headers().add("Content-Type", responseData.getResponseContentType());
 
@@ -41,7 +43,7 @@ public class HttpResponseHandler {
 				response.write(responseText);
 			}
 		} else {
-			String NOT_FOUND = "Could not find an example in cache for request URI " + request.uri();
+			String NOT_FOUND = "Could not find an example in cache for request URI " + uri;
 			response.setStatusCode(HttpStatus.SC_NOT_FOUND);
 			response.headers().add("Content-Length", String.valueOf(NOT_FOUND.length()));
 			response.write(NOT_FOUND);

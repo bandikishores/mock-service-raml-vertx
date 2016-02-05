@@ -18,4 +18,6 @@ public class Constants {
 
 	public static final String RAML_EXTENSION = ".raml";
 
+	public static final String EMPTY_STRING = "";
+
 }

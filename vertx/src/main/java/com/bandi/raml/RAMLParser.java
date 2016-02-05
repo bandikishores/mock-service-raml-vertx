@@ -31,10 +31,10 @@ public class RAMLParser {
 
 		if (CollectionUtils.isNotEmpty(pathToFiles)) {
 			for (Path path : pathToFiles) {
-				
-				if(!path.toString().endsWith(Constants.RAML_EXTENSION)) 
+
+				if (!path.toString().endsWith(Constants.RAML_EXTENSION))
 					continue;
-				
+
 				String ramlLocation = path.toUri().toString();
 
 				if (Validator.isValidRAML(ramlLocation)) {
@@ -58,29 +58,39 @@ public class RAMLParser {
 		Map<String, Resource> resources = raml.getResources();
 		if (MapUtils.isNotEmpty(resources)) {
 			for (Resource resource : resources.values()) {
-				if (MapUtils.isNotEmpty(resource.getActions())) {
-					for (ActionType actionType : resource.getActions().keySet()) {
-						if (ActionType.GET.equals(actionType)) {
-							Action action = resource.getAction(actionType);
-							Map<String, Response> responses = action.getResponses();
-							if (MapUtils.isNotEmpty(responses)) {
-								for (Response response : responses.values()) {
-									insertExampleToCache(resource.getUri(), actionType, response.getBody());
-								}
-							}
-						} else if (ActionType.POST.equals(actionType)) {
-							Action action = resource.getAction(actionType);
-							insertExampleToCache(resource.getUri(), actionType, action.getBody());
-						} else {
-							Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
-						}
-					}
-				}
+				parseResource(resource);
 			}
 
 			RAMLCache.printValuesInCache();
 		} else {
 			Logger.log("No resources found in RAML file " + raml.getTitle());
+		}
+	}
+
+	private void parseResource(Resource resource) {
+		if (MapUtils.isNotEmpty(resource.getActions())) {
+			for (ActionType actionType : resource.getActions().keySet()) {
+				if (ActionType.GET.equals(actionType)) {
+					Action action = resource.getAction(actionType);
+					Map<String, Response> responses = action.getResponses();
+					if (MapUtils.isNotEmpty(responses)) {
+						for (Response response : responses.values()) {
+							insertExampleToCache(resource.getUri(), actionType, response.getBody());
+						}
+					}
+				} else if (ActionType.POST.equals(actionType)) {
+					Action action = resource.getAction(actionType);
+					insertExampleToCache(resource.getUri(), actionType, action.getBody());
+				} else {
+					Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
+				}
+			}
+		}
+
+		if (MapUtils.isNotEmpty(resource.getResources())) {
+			for (Resource nestedResource : resource.getResources().values()) {
+				parseResource(nestedResource);
+			}
 		}
 	}
 

@@ -12,7 +12,7 @@ public class Logger {
 		System.out.println(log);
 	}
 
-	public static void log(IOException e) {
+	public static void log(Exception e) {
 		System.out.println(e);
 	}
 
