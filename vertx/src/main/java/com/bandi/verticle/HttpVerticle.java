@@ -30,6 +30,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.bandi.data.ResponseData;
 import com.bandi.http.HttpRequestResponseHandler;
 import com.bandi.http.HttpRoutingContext;
+import com.bandi.http.HttpStaticHandler;
 import com.bandi.log.Logger;
 import com.bandi.raml.RAMLParser;
 import com.bandi.util.Constants;
@@ -54,12 +55,10 @@ public class HttpVerticle extends AbstractVerticle {
 		ramlParser.processRAML();
 		
 		Router router = Router.router(vertx);
-		router.get(Constants.ROOT + Constants.ADMIN).handler(StaticHandler.create());
+		router.route(Constants.ROOT).handler(StaticHandler.create());
 		router.route().handler(new HttpRoutingContext());
 		//httpServer.requestHandler(router::accept);
-		
 		//httpServer.requestHandler(new HttpRequestResponseHandler());
-
 		//httpServer.listen(Constants.PORT);
 		httpServer.requestHandler(router::accept).listen(Constants.PORT);
 	}

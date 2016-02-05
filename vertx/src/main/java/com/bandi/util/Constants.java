@@ -12,4 +12,10 @@ public class Constants {
 	
 	public static final String RAML_FOLDER = "ramlFolder";
 
+	public static final String INDEX_PAGE = "index.xhtml";
+
+	public static final String WEBROOT = "webroot/";
+
+	public static final String RAML_EXTENSION = ".raml";
+
 }
