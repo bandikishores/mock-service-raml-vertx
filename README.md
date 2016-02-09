@@ -1,5 +1,5 @@
-# vertx
-Exploring Vertx and RAML.
+# Raml Local Mock Service using Vertx.
+Exploring Vertx and RAML - To create a Mock Service which takes RAML files as input, parses the RAML and creates the web services based on the resources available in RAML File. Finally returns the example section as output when the URL is hit.
 
 1) Creates a HTTP connection for the RAML file defined.<br />
 2) Reads the contents of the RAML file and creates mock web services for the path defined in RAML.<br />
