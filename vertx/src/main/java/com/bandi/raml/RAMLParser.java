@@ -46,7 +46,7 @@ public class RAMLParser {
 						Logger.log(" Documentation not present for RAML to load example");
 					}
 				} else {
-					Logger.log("Couldn't load raml at " + ramlLocation);
+					Logger.log("Couldn't load raml at " + ramlLocation + " as RAML is Invalid");
 				}
 			}
 		} else {

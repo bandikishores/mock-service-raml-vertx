@@ -13,13 +13,15 @@ public class Validator {
 
 	public static boolean isValidRAML(String ramlLocation) {
 		List<ValidationResult> results = RamlValidationService.createDefault().validate(ramlLocation);
+		boolean isValid = true;
+		
 		if (CollectionUtils.isEmpty(results))
-			return true;
+			return isValid;
 		else {
 			for (ValidationResult validationResult : results) {
 				if (validationResult.getLevel() == Level.ERROR) {
 					Logger.log("RAML is not valid, contains errors : " + validationResult.getMessage());
-					return false;
+					isValid = false;
 				} else if (validationResult.getLevel() == Level.WARN) {
 					Logger.log("RAML contains warnings : " + validationResult.getMessage());
 					continue;
@@ -29,6 +31,6 @@ public class Validator {
 				}
 			}
 		}
-		return true;
+		return isValid;
 	}
 }
