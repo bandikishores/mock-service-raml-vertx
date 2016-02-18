@@ -20,4 +20,6 @@ public class Constants {
 
 	public static final String EMPTY_STRING = "";
 
+	public static final String INCLUDE_TAG = "!include";
+
 }

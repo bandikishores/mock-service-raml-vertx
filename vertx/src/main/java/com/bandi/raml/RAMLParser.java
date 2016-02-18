@@ -1,5 +1,13 @@
 package com.bandi.raml;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +31,7 @@ import com.bandi.log.Logger;
 import com.bandi.util.Constants;
 import com.bandi.util.Utils;
 import com.bandi.validate.Validator;
+import com.google.common.io.Files;
 
 public class RAMLParser {
 
@@ -41,7 +50,7 @@ public class RAMLParser {
 					Raml raml = new RamlDocumentBuilder().build(ramlLocation);
 
 					if (raml != null) {
-						parse(raml);
+						parse(raml, path.getParent().toString());
 					} else {
 						Logger.log(" Documentation not present for RAML to load example");
 					}
@@ -54,11 +63,11 @@ public class RAMLParser {
 		}
 	}
 
-	public void parse(Raml raml) {
+	public void parse(Raml raml, String ramlLocation) {
 		Map<String, Resource> resources = raml.getResources();
 		if (MapUtils.isNotEmpty(resources)) {
 			for (Resource resource : resources.values()) {
-				parseResource(resource);
+				parseResource(resource, ramlLocation);
 			}
 
 			RAMLCache.printValuesInCache();
@@ -67,7 +76,7 @@ public class RAMLParser {
 		}
 	}
 
-	private void parseResource(Resource resource) {
+	private void parseResource(Resource resource, String ramlLocation) {
 		if (MapUtils.isNotEmpty(resource.getActions())) {
 			for (ActionType actionType : resource.getActions().keySet()) {
 				if (ActionType.GET.equals(actionType)) {
@@ -75,12 +84,12 @@ public class RAMLParser {
 					Map<String, Response> responses = action.getResponses();
 					if (MapUtils.isNotEmpty(responses)) {
 						for (Response response : responses.values()) {
-							insertExampleToCache(resource.getUri(), actionType, response.getBody());
+							insertExampleToCache(resource.getUri(), ramlLocation, actionType, response.getBody());
 						}
 					}
 				} else if (ActionType.POST.equals(actionType)) {
 					Action action = resource.getAction(actionType);
-					insertExampleToCache(resource.getUri(), actionType, action.getBody());
+					insertExampleToCache(resource.getUri(), ramlLocation, actionType, action.getBody());
 				} else {
 					Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
 				}
@@ -89,12 +98,13 @@ public class RAMLParser {
 
 		if (MapUtils.isNotEmpty(resource.getResources())) {
 			for (Resource nestedResource : resource.getResources().values()) {
-				parseResource(nestedResource);
+				parseResource(nestedResource, ramlLocation);
 			}
 		}
 	}
 
-	private void insertExampleToCache(String uri, ActionType actionType, Map<String, MimeType> body) {
+	private void insertExampleToCache(String uri, String ramlLocation, ActionType actionType,
+			Map<String, MimeType> body) {
 
 		if (MapUtils.isNotEmpty(body)) {
 			// response.getBody().get(MediaType.APPLICATION_JSON).getExample();
@@ -104,6 +114,9 @@ public class RAMLParser {
 				responseData.setMimeType(body.get(contentType));
 				responseData.setActionType(actionType);
 
+				responseData.getMimeType()
+						.setExample(parseAndExtractExample(responseData.getMimeType().getExample(), ramlLocation));
+
 				RAMLCache.insertInToCache(uri, responseData);
 				break;
 			}
@@ -111,6 +124,33 @@ public class RAMLParser {
 		} else {
 			Logger.log("response body not found");
 		}
+	}
+
+	private String parseAndExtractExample(String example, String ramlLocation) {
+		if (example == null)
+			return example;
+
+		example = example.trim();
+		if (example.startsWith(Constants.INCLUDE_TAG)) {
+			String[] splitExample = example.split(Constants.INCLUDE_TAG);
+
+			if (splitExample != null && splitExample.length > 1) {
+				String exampleURL = splitExample[1];
+				exampleURL = exampleURL.trim();
+
+				if (!exampleURL.isEmpty()) {
+					try {
+						if (!ramlLocation.endsWith(Constants.ROOT))
+							ramlLocation = ramlLocation + Constants.ROOT;
+
+						example = Files.toString(new File(ramlLocation + exampleURL), StandardCharsets.UTF_8);
+					} catch (IOException e) {
+						Logger.log(e);
+					}
+				}
+			}
+		}
+		return example;
 	}
 
 }
