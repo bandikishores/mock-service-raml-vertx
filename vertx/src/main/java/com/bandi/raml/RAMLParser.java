@@ -41,7 +41,7 @@ public class RAMLParser {
 		if (CollectionUtils.isNotEmpty(pathToFiles)) {
 			for (Path path : pathToFiles) {
 
-				if (!path.toString().endsWith(Constants.RAML_EXTENSION))
+				if(isRAMLExcluded(path))
 					continue;
 
 				String ramlLocation = path.toUri().toString();
@@ -61,6 +61,15 @@ public class RAMLParser {
 		} else {
 			Logger.log("No RAMLs found");
 		}
+	}
+
+	private boolean isRAMLExcluded(Path path) {
+		if (!path.toString().endsWith(Constants.RAML_EXTENSION))
+			return true;
+		else if(path.toString().contains(Constants.TRAITS))
+			return true;
+		
+		return false;
 	}
 
 	public void parse(Raml raml, String ramlLocation) {

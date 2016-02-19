@@ -22,4 +22,6 @@ public class Constants {
 
 	public static final String INCLUDE_TAG = "!include";
 
+	public static final String TRAITS = "traits";
+
 }
