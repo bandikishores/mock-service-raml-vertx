@@ -103,7 +103,12 @@ public class RAMLParser {
 					}
 				} else if (ActionType.POST.equals(actionType)) {
 					Action action = resource.getAction(actionType);
-					insertExampleToCache(basePath + resource.getUri(), ramlLocation, actionType, action.getBody());
+					Map<String, Response> responses = action.getResponses();
+					if (MapUtils.isNotEmpty(responses)) {
+						for (Response response : responses.values()) {
+							insertExampleToCache(basePath + resource.getUri(), ramlLocation, actionType, response.getBody());
+						}
+					}
 				} else {
 					Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
 				}
