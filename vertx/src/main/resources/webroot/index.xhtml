@@ -3,10 +3,17 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>Welcome to Admin Portal</title>
-		<link href="styles/api-console-light-theme.css" rel="stylesheet" class="theme"/>
+		<title>Welcome to API Console</title>
+		<link href="styles/vendor.css" rel="stylesheet" type="text/css">
+  		<link rel="stylesheet" href="path/to/dist/styles/light-theme.css" type="text/css" />
 	</head>
-	<body ng-app="ramlConsoleApp" class="raml-console-body">
-		Yet to display
+	<body ng-app="ramlConsoleApp" ng-cloak>
+	
+		<script src="path/to/dist/scripts/vendor.js"></script>
+		  <script type="text/javascript" src="scripts/api-console.js"></script>
+		  <script type="text/javascript">
+		    $.noConflict();
+		  </script>
+		  <raml-console src="path-to-raml" single-view></raml-console>
 	</body>
 </html>

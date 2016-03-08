@@ -17,6 +17,7 @@ import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
+import org.apache.commons.lang.StringUtils;
 import org.raml.model.Action;
 import org.raml.model.ActionType;
 import org.raml.model.MimeType;
@@ -73,10 +74,14 @@ public class RAMLParser {
 	}
 
 	public void parse(Raml raml, String ramlLocation) {
+		
+		String basePath = raml.getBasePath();
+		if(StringUtils.isEmpty(basePath)) basePath = "";
+		
 		Map<String, Resource> resources = raml.getResources();
 		if (MapUtils.isNotEmpty(resources)) {
 			for (Resource resource : resources.values()) {
-				parseResource(resource, ramlLocation);
+				parseResource(resource, ramlLocation, basePath);
 			}
 
 			RAMLCache.printValuesInCache();
@@ -85,7 +90,7 @@ public class RAMLParser {
 		}
 	}
 
-	private void parseResource(Resource resource, String ramlLocation) {
+	private void parseResource(Resource resource, String ramlLocation, String basePath) {
 		if (MapUtils.isNotEmpty(resource.getActions())) {
 			for (ActionType actionType : resource.getActions().keySet()) {
 				if (ActionType.GET.equals(actionType)) {
@@ -93,12 +98,12 @@ public class RAMLParser {
 					Map<String, Response> responses = action.getResponses();
 					if (MapUtils.isNotEmpty(responses)) {
 						for (Response response : responses.values()) {
-							insertExampleToCache(resource.getUri(), ramlLocation, actionType, response.getBody());
+							insertExampleToCache(basePath + resource.getUri(), ramlLocation, actionType, response.getBody());
 						}
 					}
 				} else if (ActionType.POST.equals(actionType)) {
 					Action action = resource.getAction(actionType);
-					insertExampleToCache(resource.getUri(), ramlLocation, actionType, action.getBody());
+					insertExampleToCache(basePath + resource.getUri(), ramlLocation, actionType, action.getBody());
 				} else {
 					Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
 				}
@@ -107,7 +112,7 @@ public class RAMLParser {
 
 		if (MapUtils.isNotEmpty(resource.getResources())) {
 			for (Resource nestedResource : resource.getResources().values()) {
-				parseResource(nestedResource, ramlLocation);
+				parseResource(nestedResource, ramlLocation, basePath);
 			}
 		}
 	}
