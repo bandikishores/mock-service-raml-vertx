@@ -40,7 +40,7 @@ public class HttpStaticHandler implements Handler<RoutingContext> {
 	
 	@Override
 	public void handle(RoutingContext routingContext) {
-		System.out.println("incoming request!");
+		System.out.println("incoming Static request!");
 		HttpServerRequest request = routingContext.request();
 		HttpServerResponse response = request.response();
 		

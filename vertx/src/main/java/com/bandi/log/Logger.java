@@ -13,7 +13,7 @@ public class Logger {
 	}
 
 	public static void log(Exception e) {
-		System.out.println(e);
+		e.printStackTrace();
 	}
 
 	public static void log(Object cacheofRAML) {

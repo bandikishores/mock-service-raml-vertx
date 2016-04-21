@@ -39,33 +39,47 @@ import com.bandi.validate.Validator;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
+import lombok.Getter;
 
 public class HttpVerticle extends AbstractVerticle {
+	
+	@Getter
+	private static Vertx vert;
 
 	@Override
 	public void start(Future<Void> startFuture) {
-		Logger.log("MyVerticle started!");
 
+		vert = vertx;
+		
 		HttpServer httpServer = vertx.createHttpServer();
 
 		RAMLParser ramlParser = new RAMLParser();
 		ramlParser.processRAML();
-		
+
 		Router router = Router.router(vertx);
 		router.route(Constants.ROOT).handler(StaticHandler.create());
+		router.route().handler(BodyHandler.create());
 		router.route().handler(new HttpRoutingContext());
-		//httpServer.requestHandler(router::accept);
-		//httpServer.requestHandler(new HttpRequestResponseHandler());
-		//httpServer.listen(Constants.PORT);
 		httpServer.requestHandler(router::accept).listen(Constants.PORT);
+		
+
+		HttpServer httpServer1 = vertx.createHttpServer();
+		Router router1 = Router.router(vertx);
+		router1.route().handler(StaticHandler.create());
+		httpServer1.requestHandler(router1::accept);
+		httpServer1.listen(Constants.ADMIN_PORT);
+
+		Logger.log("Mock Service started!");
 	}
 
 	@Override
 	public void stop(Future stopFuture) throws Exception {
-		Logger.log("MyVerticle stopped!");
+		Logger.log("Mock Service stopped!");
 	}
 
 	private TagResolver[] defaultResolver(TagResolver[] tagResolvers) {

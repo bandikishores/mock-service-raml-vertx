@@ -8,9 +8,16 @@ import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
+import io.vertx.ext.web.RoutingContext;
 
 public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 	
+	private RoutingContext routingContext;
+	
+	public HttpRequestResponseHandler(RoutingContext routingContext) {
+		this.routingContext = routingContext;
+	}
+
 	@Override
 	public void handle(HttpServerRequest request) {
 		System.out.println("incoming request!");
@@ -18,7 +25,7 @@ public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 		Buffer fullRequestBody = Buffer.buffer();
 		
 		if (request.method() == HttpMethod.POST) {
-			request.handler(new HttpPostRequestHandler(fullRequestBody));
+		//	request.handler(new HttpPostRequestHandler(fullRequestBody));
 
 			/*request.endHandler(new Handler<Void>() {
 				@Override
@@ -29,7 +36,7 @@ public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 			});*/
 		}
 		
-		HttpResponseHandler httpResponseHandler = new HttpResponseHandler(request);
+		HttpResponseHandler httpResponseHandler = new HttpResponseHandler(routingContext, request);
 		httpResponseHandler.createResponse();
 		httpResponseHandler.close();
 	}

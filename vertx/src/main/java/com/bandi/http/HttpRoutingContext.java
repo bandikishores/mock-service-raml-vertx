@@ -7,6 +7,6 @@ public class HttpRoutingContext implements Handler<RoutingContext> {
 
 	@Override
 	public void handle(RoutingContext routingContext) {
-		new HttpRequestResponseHandler().handle(routingContext.request());
+		new HttpRequestResponseHandler(routingContext).handle(routingContext.request());
 	}
 }

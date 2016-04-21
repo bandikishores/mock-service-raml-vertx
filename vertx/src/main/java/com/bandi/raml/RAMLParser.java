@@ -84,7 +84,7 @@ public class RAMLParser {
 				parseResource(resource, ramlLocation, basePath);
 			}
 
-			RAMLCache.printValuesInCache();
+			// RAMLCache.printValuesInCache();
 		} else {
 			Logger.log("No resources found in RAML file " + raml.getTitle());
 		}
