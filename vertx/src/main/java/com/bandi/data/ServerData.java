@@ -11,6 +11,6 @@ public class ServerData {
 
 	@Override
 	public String toString() {
-		return "http://"+url+":"+port;
+		return "http://"+url+((port != null)?(":"+port):"");
 	}
 }

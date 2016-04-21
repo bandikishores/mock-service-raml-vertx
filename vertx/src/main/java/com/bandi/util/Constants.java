@@ -26,4 +26,12 @@ public class Constants {
 
 	public static final String TRAITS = "traits";
 
+	public static final String UPDATE = "update";
+
+	public static final String BASE_URI = "baseURI";
+	
+	public static final String HOSTNAME = "hostname";
+	
+	public static final String PORT_STRING = "port";
+
 }

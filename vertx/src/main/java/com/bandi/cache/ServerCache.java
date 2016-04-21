@@ -1,6 +1,7 @@
 package com.bandi.cache;
 
 import java.util.HashMap;
+import java.util.Set;
 
 import com.bandi.data.ServerData;
 
@@ -21,5 +22,9 @@ public class ServerCache {
 
 	public static ServerData getServerData(String baseURI) {
 		return cacheofServers.get(baseURI);
+	}
+
+	public static Set<String> getAllServerBaseURI() {
+		return cacheofServers.keySet();
 	}
 }

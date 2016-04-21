@@ -27,6 +27,7 @@ import org.raml.parser.visitor.RamlDocumentBuilder;
 import org.raml.parser.visitor.YamlDocumentBuilder;
 import org.yaml.snakeyaml.Yaml;
 
+import com.bandi.admin.AdminRoutingContext;
 import com.bandi.data.ResponseData;
 import com.bandi.http.HttpRequestResponseHandler;
 import com.bandi.http.HttpRoutingContext;
@@ -47,7 +48,7 @@ import io.vertx.ext.web.handler.StaticHandler;
 import lombok.Getter;
 
 public class HttpVerticle extends AbstractVerticle {
-	
+
 	@Getter
 	private static Vertx vert;
 
@@ -55,7 +56,7 @@ public class HttpVerticle extends AbstractVerticle {
 	public void start(Future<Void> startFuture) {
 
 		vert = vertx;
-		
+
 		HttpServer httpServer = vertx.createHttpServer();
 
 		RAMLParser ramlParser = new RAMLParser();
@@ -66,13 +67,24 @@ public class HttpVerticle extends AbstractVerticle {
 		router.route().handler(BodyHandler.create());
 		router.route().handler(new HttpRoutingContext());
 		httpServer.requestHandler(router::accept).listen(Constants.PORT);
-		
 
-		HttpServer httpServer1 = vertx.createHttpServer();
-		Router router1 = Router.router(vertx);
-		router1.route().handler(StaticHandler.create());
-		httpServer1.requestHandler(router1::accept);
-		httpServer1.listen(Constants.ADMIN_PORT);
+		HttpServer adminServer = vertx.createHttpServer();
+		Router adminRouter = Router.router(vertx);
+		// router1.route().handler(StaticHandler.create());
+		
+		/*
+		   router1.route(Constants.ROOT).handler(ctx -> {
+			Logger.log("Got an HTTP request to /");
+			ctx.response().sendFile("webroot/index.html");
+		});
+		
+		*/
+		adminRouter.route(Constants.ROOT).handler(BodyHandler.create());
+		adminRouter.route(Constants.ROOT).handler(new AdminRoutingContext());
+		adminRouter.route(Constants.ROOT+Constants.UPDATE).handler(BodyHandler.create());
+		adminRouter.route(Constants.ROOT+Constants.UPDATE).handler(new AdminRoutingContext());
+		adminServer.requestHandler(adminRouter::accept);
+		adminServer.listen(Constants.ADMIN_PORT);
 
 		Logger.log("Mock Service started!");
 	}
