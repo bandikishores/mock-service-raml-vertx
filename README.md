@@ -1,4 +1,7 @@
 # Local-Remote Mock Service using Raml-Vertx.
+
+For a Detailed Explanation of RAML and Usage of this Mock Service, refer to [wiki-document](https://github.com/bandikishores/mock-service-raml-vertx/wiki/Mock-Service-and-RAML)
+
 Exploring Vertx and RAML - To create a Mock Service which takes RAML files as input, parses the RAML and creates the web services based on the resources available in RAML File. Finally returns the example section as output when the URL is hit.
 
 * Creates a HTTP connection for the RAML file defined.<br />
