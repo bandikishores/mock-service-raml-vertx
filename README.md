@@ -43,7 +43,9 @@ Then go to Admin URL mentioned above and add the below details
 3. Hostname - mybankdomain.com <br/>
 
 Now make the request and you'll be able to get the contents from that server as well.
+<br/><br/>
 
+### 3. Additional Configuration when building in local
 Add below repo and profiles in your .m2/settings.xml for downloading raml parsers
 
 	<repository>
