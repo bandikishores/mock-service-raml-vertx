@@ -1,20 +1,48 @@
-# Raml Local Mock Service using Vertx.
+# Local-Remote Mock Service using Raml-Vertx.
 Exploring Vertx and RAML - To create a Mock Service which takes RAML files as input, parses the RAML and creates the web services based on the resources available in RAML File. Finally returns the example section as output when the URL is hit.
 
-1) Creates a HTTP connection for the RAML file defined.<br />
-2) Reads the contents of the RAML file and creates mock web services for the path defined in RAML.<br />
-3) Finally, returns the example provided in the RAML as the output.<br />
+* Creates a HTTP connection for the RAML file defined.<br />
+* Reads the contents of the RAML file and creates mock web services for the path defined in RAML.<br />
+* On hitting/accesing the URL - 
+ + If found, It returns the example provided in the RAML as the output.<br />
+ + If not found, then based on the base URI 
+   - If any externals servers have been added the call will be forwarded to respective servers and the output of external server will be transfered to client. <br/>
 
 
 
-To start the service using command prompt
-java -jar <Path To Jar> [Folder Path where RAMLs are present]
+### 1. *To start the service using command prompt:*
+> java -jar <Path To Jar> [Folder Path where RAMLs are present]
 
 Option:
 	Folder Path for RAML - This is optional.
 
-Ex : java -jar vertx/target/vertx-jar-with-dependencies.jar /home/kishore/mygit/vertx/vertx/src/main/resources/raml/
+Ex : 
+> java -jar vertx/target/mock-service.jar /home/kishore/mygit/vertx/vertx/src/main/resources/raml/
 
+<br/>
+
+After this command execution, the server starts at port 4123. It can be accessed using 
+> http://localhost:4123/[Resource-Path-Including-Base-Path]  
+
+> Ex: http://localhost:4123/bankService/getAccounts.json 
+
+  * If the response from the example section provided appears then the service is working fine. 
+    + Alternatively, you can use Postman to check the response based on get/post method types.
+    
+<br/><br/>
+
+### 2. *To Add an External Service:* <br/>
+Access the Admin URL at
+> http://localhost:4124/
+
+Say the resource "/getAccounts.json" was not defined in the RAML contract. In which case you would like to get this info from third party/External server.
+Then go to Admin URL mentioned above and add the below details
+> For URL http://mybankdomain.com:8080/bankService/getAccounts.json
+1. BaseURI - bankService
+2. Port - 8080
+3. Hostname - mybankdomain.com <br/>
+
+Now make the request and you'll be able to get the contents from that server as well.
 
 Add below repo and profiles in your .m2/settings.xml for downloading raml parsers
 
