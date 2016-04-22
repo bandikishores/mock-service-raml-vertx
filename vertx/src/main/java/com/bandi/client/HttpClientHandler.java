@@ -2,14 +2,18 @@ package com.bandi.client;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.concurrent.CountDownLatch;
 
 import javax.ws.rs.NotSupportedException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.NameValuePair;
 import org.apache.http.ParseException;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -20,6 +24,7 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.raml.model.MimeType;
 
@@ -83,10 +88,18 @@ public class HttpClientHandler {
 			} catch (ParseException e) {
 				Logger.log(e);
 			}
-			HttpEntity entity;
 			try {
-				entity = new ByteArrayEntity(routingContext.getBodyAsString().getBytes("UTF-8"));
-				((HttpPost) httpRequestMethod).setEntity(entity);
+				if (request.formAttributes() != null && request.formAttributes().size() > 0) {
+					List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+					request.formAttributes().entries().stream().forEach(
+							entity -> urlParameters.add(new BasicNameValuePair(entity.getKey(), entity.getValue())));
+					((HttpPost) httpRequestMethod).setEntity(new UrlEncodedFormEntity(urlParameters));
+				}
+				else if (routingContext.getBodyAsString() != null) {
+					HttpEntity entity;
+					entity = new ByteArrayEntity(routingContext.getBodyAsString().getBytes("UTF-8"));
+					((HttpPost) httpRequestMethod).setEntity(entity);
+				} 
 			} catch (UnsupportedEncodingException e) {
 				Logger.log(e);
 			}
