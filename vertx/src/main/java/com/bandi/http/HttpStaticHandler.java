@@ -43,7 +43,7 @@ public class HttpStaticHandler implements Handler<RoutingContext> {
 		response.setStatusCode(HttpStatus.SC_OK);
 		response.headers().add("Content-Type", MediaType.TEXT_HTML);
 
-		InputStream in = VertxMain.class.getClassLoader().getResourceAsStream(Constants.WEBROOT + Constants.INDEX_PAGE);
+		InputStream in = MockServiceMain.class.getClassLoader().getResourceAsStream(Constants.WEBROOT + Constants.INDEX_PAGE);
 		
 		try {
 			File tempFile = File.createTempFile("index", ".xhtml");

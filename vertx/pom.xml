@@ -3,12 +3,12 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.bandi</groupId>
-	<artifactId>vertx</artifactId>
+	<artifactId>mockservice</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<properties>
 		<!-- the main class -->
-		<main.class>com.bandi.main.VertxMain</main.class>
+		<main.class>com.bandi.main.MockServiceMain</main.class>
 		<snakeyaml.version>1.15</snakeyaml.version>
 	</properties>
 
@@ -119,7 +119,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.bandi.main.VertxMain</mainClass>
+							<mainClass>com.bandi.main.MockServiceMain</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
@@ -150,17 +150,18 @@
 					<archive>
 						<manifest>
 							<addClasspath>true</addClasspath>
-							<mainClass>com.bandi.main.VertxMain</mainClass>
+							<mainClass>com.bandi.main.MockServiceMain</mainClass>
 						</manifest>
 					</archive>
 
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
-
+					<appendAssemblyId>false</appendAssemblyId>
+					
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>vertx</finalName>
+		<finalName>mock-service</finalName>
 	</build>
 </project>

@@ -7,7 +7,7 @@ import com.bandi.verticle.HttpVerticle;
 
 import io.vertx.core.Vertx;
 
-public class VertxMain {
+public class MockServiceMain {
 
 	public static void main(String[] args) {
 		if (ArrayUtils.isNotEmpty(args)) {

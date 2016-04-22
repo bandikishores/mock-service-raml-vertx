@@ -15,7 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.raml.model.ActionType;
 
 import com.bandi.log.Logger;
-import com.bandi.main.VertxMain;
+import com.bandi.main.MockServiceMain;
 
 import io.vertx.core.http.HttpMethod;
 
@@ -26,7 +26,7 @@ public class Utils {
 		String ramlFolderPath = System.getProperty(Constants.RAML_FOLDER);
 		try {
 			if (StringUtils.isBlank(ramlFolderPath)) {
-				Enumeration<URL> urls = VertxMain.class.getClassLoader().getResources(Constants.ramlLocation);
+				Enumeration<URL> urls = MockServiceMain.class.getClassLoader().getResources(Constants.ramlLocation);
 
 				if (urls != null && urls.hasMoreElements()) {
 					URL url = urls.nextElement();
