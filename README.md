@@ -29,7 +29,7 @@ After this command execution, the server starts at port 4123. It can be accessed
   * If the response from the example section provided appears then the service is working fine. 
     + Alternatively, you can use Postman to check the response based on get/post method types.
     
-<br/><br/>
+<br/>
 
 ### 2. To Add an External Service: <br/>
 Access the Admin URL at
