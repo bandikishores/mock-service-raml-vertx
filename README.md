@@ -10,7 +10,7 @@ Exploring Vertx and RAML - To create a Mock Service which takes RAML files as in
 
 
 
-### 1. *To start the service using command prompt:*
+### 1. To start the service using command prompt:
 > java -jar <Path To Jar> [Folder Path where RAMLs are present]
 
 Option:
@@ -31,15 +31,15 @@ After this command execution, the server starts at port 4123. It can be accessed
     
 <br/><br/>
 
-### 2. *To Add an External Service:* <br/>
+### 2. To Add an External Service: <br/>
 Access the Admin URL at
 > http://localhost:4124/
 
 Say the resource "/getAccounts.json" was not defined in the RAML contract. In which case you would like to get this info from third party/External server.
 Then go to Admin URL mentioned above and add the below details
-> For URL http://mybankdomain.com:8080/bankService/getAccounts.json
-1. BaseURI - bankService
-2. Port - 8080
+> For URL http://mybankdomain.com:8080/bankService/getAccounts.json <br/>
+1. BaseURI - bankService <br/>
+2. Port - 8080 <br/>
 3. Hostname - mybankdomain.com <br/>
 
 Now make the request and you'll be able to get the contents from that server as well.
