@@ -2,6 +2,7 @@ package com.bandi.admin;
 
 import com.bandi.http.HttpPostRequestHandler;
 import com.bandi.http.HttpResponseHandler;
+import com.bandi.log.Logger;
 
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
@@ -19,7 +20,7 @@ public class AdminRequestResponseHandler implements Handler<HttpServerRequest> {
 	
 	@Override
 	public void handle(HttpServerRequest request) {
-		System.out.println("Admin request!");
+		Logger.log("Admin request!");
 
 		Buffer fullRequestBody = Buffer.buffer();
 

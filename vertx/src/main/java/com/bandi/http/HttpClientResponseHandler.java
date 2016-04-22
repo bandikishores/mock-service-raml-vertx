@@ -3,11 +3,11 @@ package com.bandi.http;
 import java.util.concurrent.CountDownLatch;
 
 import com.bandi.data.ResponseData;
+import com.bandi.log.Logger;
 
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientResponse;
-import lombok.Data;
 import lombok.Getter;
 
 @Getter
@@ -30,8 +30,8 @@ public class HttpClientResponseHandler implements Handler<HttpClientResponse> {
 		httpClientResponse.bodyHandler(new Handler<Buffer>() {
 			@Override
 			public void handle(Buffer buffer) {
-				System.out.println("Response (" + buffer.length() + "): ");
-				System.out.println(buffer.getString(0, buffer.length()));
+				Logger.log("Response (" + buffer.length() + "): ");
+				Logger.log(buffer.getString(0, buffer.length()));
 			}
 		});
 		

@@ -2,10 +2,9 @@ package com.bandi.main;
 
 import org.apache.commons.lang3.ArrayUtils;
 
-import com.bandi.cache.ServerCache;
-import com.bandi.data.ServerData;
 import com.bandi.util.Constants;
 import com.bandi.verticle.HttpVerticle;
+
 import io.vertx.core.Vertx;
 
 public class VertxMain {

@@ -3,7 +3,6 @@ package com.bandi.admin;
 import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.bandi.cache.ServerCache;
@@ -18,7 +17,7 @@ public class AdminRoutingContext implements Handler<RoutingContext> {
 
 	@Override
 	public void handle(RoutingContext routingContext) {
-		Logger.log("Got a HTTP request to /");
+		// Logger.log("Got a HTTP request to /");
 		// routingContext.response().sendFile("webroot/update.html");
 
 		if (routingContext.request().uri().contains(Constants.UPDATE)) {

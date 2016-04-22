@@ -1,8 +1,6 @@
 package com.bandi.http;
 
-import java.util.HashMap;
-
-import com.bandi.data.ResponseData;
+import com.bandi.log.Logger;
 
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
@@ -20,7 +18,7 @@ public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 
 	@Override
 	public void handle(HttpServerRequest request) {
-		System.out.println("incoming request!");
+		//Logger.log("incoming request!");
 
 		Buffer fullRequestBody = Buffer.buffer();
 		

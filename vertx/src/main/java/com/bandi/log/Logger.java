@@ -1,10 +1,5 @@
 package com.bandi.log;
 
-import java.io.IOException;
-import java.util.HashMap;
-
-import com.bandi.data.ResponseData;
-
 public class Logger {
 	
 	public static void log(String log)

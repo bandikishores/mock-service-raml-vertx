@@ -3,40 +3,23 @@ package com.bandi.verticle;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.net.URL;
-import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.MediaType;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.ArrayUtils;
-import org.raml.model.Action;
-import org.raml.model.ActionType;
-import org.raml.model.Raml;
 import org.raml.model.Resource;
-import org.raml.model.Response;
 import org.raml.parser.loader.DefaultResourceLoader;
 import org.raml.parser.tagresolver.IncludeResolver;
 import org.raml.parser.tagresolver.JacksonTagResolver;
 import org.raml.parser.tagresolver.JaxbTagResolver;
 import org.raml.parser.tagresolver.TagResolver;
-import org.raml.parser.visitor.RamlDocumentBuilder;
 import org.raml.parser.visitor.YamlDocumentBuilder;
 import org.yaml.snakeyaml.Yaml;
 
 import com.bandi.admin.AdminRoutingContext;
-import com.bandi.data.ResponseData;
-import com.bandi.http.HttpRequestResponseHandler;
 import com.bandi.http.HttpRoutingContext;
-import com.bandi.http.HttpStaticHandler;
 import com.bandi.log.Logger;
 import com.bandi.raml.RAMLParser;
 import com.bandi.util.Constants;
-import com.bandi.util.Utils;
-import com.bandi.validate.Validator;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
