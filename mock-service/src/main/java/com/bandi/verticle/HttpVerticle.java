@@ -16,6 +16,7 @@ import org.raml.parser.visitor.YamlDocumentBuilder;
 import org.yaml.snakeyaml.Yaml;
 
 import com.bandi.admin.AdminRoutingContext;
+import com.bandi.db.DatabaseConnection;
 import com.bandi.http.HttpRoutingContext;
 import com.bandi.log.Logger;
 import com.bandi.raml.RAMLParser;
@@ -41,6 +42,8 @@ public class HttpVerticle extends AbstractVerticle {
 		vert = vertx;
 
 		HttpServer httpServer = vertx.createHttpServer();
+		
+		// DatabaseConnection.createDB();
 
 		RAMLParser ramlParser = new RAMLParser();
 		ramlParser.processRAML();

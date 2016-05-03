@@ -2,7 +2,7 @@ package com.bandi.validate;
 
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.raml.parser.rule.ValidationResult;
 import org.raml.parser.rule.ValidationResult.Level;
 import org.raml.parser.visitor.RamlValidationService;

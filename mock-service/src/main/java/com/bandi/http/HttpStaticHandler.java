@@ -2,7 +2,6 @@ package com.bandi.http;
 
 import javax.annotation.PostConstruct;
 
-import com.bandi.log.Logger;
 import com.bandi.util.Constants;
 
 import io.vertx.core.Handler;

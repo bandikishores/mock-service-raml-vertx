@@ -1,7 +1,5 @@
 package com.bandi.http;
 
-import com.bandi.log.Logger;
-
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;

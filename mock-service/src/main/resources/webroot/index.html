@@ -3,18 +3,39 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1"/>
-		<title>Welcome to API Console</title>
-		<link href="styles/vendor.css" rel="stylesheet" type="text/css">
-  		<link rel="stylesheet" href="path/to/dist/styles/light-theme.css" type="text/css" />
+		<title>Welcome to Mock Service - Homepage</title>
 	</head>
-	<body ng-app="ramlConsoleApp" ng-cloak>
-		<script src="path/to/dist/scripts/vendor.js"></script>
-		  <script type="text/javascript" src="scripts/api-console.js"></script>
-		  <script type="text/javascript">
-		    $.noConflict();
-		  </script>
-		  <raml-console src="path-to-raml" single-view></raml-console>
-		  
-		  Welcome to Admin Portal
+	
+	<script type="text/javascript">
+/* 	if (!window.location.origin) {
+		  window.location.origin = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port: '');
+		} */
+		function forwardToAdminPortal() {
+		  document.getElementById("adminLink").href=window.location.protocol + "//" + window.location.hostname + ":4124" ; 
+		  return false;
+		}
+	</script>
+
+	<body>
+		  Welcome to Main Portal.
+		  <p style="BACKGROUND-COLOR: grey" align=center>
+			  	Admin Portal has been changed to 4124 port. <br/>
+			  	
+			    <h2>Features Supported :</h2> 
+			  	<dl>
+			  		<dt>- Adding Actual Servers</dt> <dd>Which will be hit when mock service can't find resource.</dd>
+			  		<dt>- In-Memory Database</dt>
+			  		<dd>
+			  			<ul>
+			  				<li>Used to insert/update/delete the cached resources inside Mock Service.</li>
+			  				<li>Providing ability to update the resources from outside services - used for Data Setup of Test Cases.</li>
+			  			</ul>
+			  		</dd>
+			  	</dl>
+		  </p>
+		  <p style="BACKGROUND-COLOR: silver;" align="center">
+		  	 <a href="#" id="adminLink" onclick="forwardToAdminPortal()"> Click here to re-direct to Admin port.</a>
+		  </p>
+
 	</body>
 </html>

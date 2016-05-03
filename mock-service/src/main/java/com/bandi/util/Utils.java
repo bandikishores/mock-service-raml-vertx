@@ -2,6 +2,7 @@ package com.bandi.util;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.file.Files;
@@ -63,6 +64,28 @@ public class Utils {
 			return ActionType.PATCH;
 
 		return null;
+	}
+
+	public static String convertURLToPath(String uri) {
+
+		if (StringUtils.isEmpty(uri))
+			return uri;
+
+		try {
+			String escapedURI = URLDecoder.decode(uri, "UTF-8");
+
+			escapedURI = new java.net.URI(escapedURI).getPath();
+
+			if (escapedURI.endsWith("/"))
+				escapedURI = escapedURI.substring(0, escapedURI.length() - 1);
+
+			return escapedURI;
+		} catch (UnsupportedEncodingException e) {
+			Logger.log(e);
+		} catch (URISyntaxException e) {
+			Logger.log(e);
+		}
+		return uri;
 	}
 
 	public static String convertURLToString(String uri) {

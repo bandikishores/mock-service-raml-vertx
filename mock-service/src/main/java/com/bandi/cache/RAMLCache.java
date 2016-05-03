@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.raml.model.ActionType;
 
 import com.bandi.data.ResponseData;
