@@ -45,14 +45,14 @@ public class RAMLParser {
 					if (raml != null) {
 						parse(raml, path.getParent().toString());
 					} else {
-						Logger.log(" Documentation not present for RAML to load example");
+						Logger.error(" Documentation not present for RAML to load example");
 					}
 				} else {
-					Logger.log("Couldn't load raml at " + ramlLocation + " as RAML is Invalid");
+					Logger.error("Couldn't load raml at " + ramlLocation + " as RAML is Invalid");
 				}
 			}
 		} else {
-			Logger.log("No RAMLs found");
+			Logger.error("No RAMLs found");
 		}
 	}
 
@@ -78,7 +78,7 @@ public class RAMLParser {
 
 			// RAMLCache.printValuesInCache();
 		} else {
-			Logger.log("No resources found in RAML file " + raml.getTitle());
+			Logger.error("No resources found in RAML file " + raml.getTitle());
 		}
 	}
 
@@ -102,7 +102,7 @@ public class RAMLParser {
 						}
 					}
 				} else {
-					Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
+					Logger.error("Supported RequestMethods are Get and Post, but found " + actionType);
 				}
 			}
 		}
@@ -133,7 +133,7 @@ public class RAMLParser {
 			}
 
 		} else {
-			Logger.log("response body not found");
+			Logger.error("response body not found");
 		}
 	}
 

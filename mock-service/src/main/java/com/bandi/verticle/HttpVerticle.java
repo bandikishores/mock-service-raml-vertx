@@ -43,7 +43,9 @@ public class HttpVerticle extends AbstractVerticle {
 
 		HttpServer httpServer = vertx.createHttpServer();
 		
-		// DatabaseConnection.createDB();
+		DatabaseConnection.printCompleted();
+		
+		DatabaseConnection.testAllConnections();
 
 		RAMLParser ramlParser = new RAMLParser();
 		ramlParser.processRAML();
@@ -72,12 +74,12 @@ public class HttpVerticle extends AbstractVerticle {
 		adminServer.requestHandler(adminRouter::accept);
 		adminServer.listen(Constants.ADMIN_PORT);
 
-		Logger.log("Mock Service started!");
+		Logger.error("Mock Service started!");
 	}
 
 	@Override
 	public void stop(Future stopFuture) throws Exception {
-		Logger.log("Mock Service stopped!");
+		Logger.error("Mock Service stopped!");
 	}
 
 	private TagResolver[] defaultResolver(TagResolver[] tagResolvers) {

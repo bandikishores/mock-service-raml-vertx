@@ -38,7 +38,7 @@ public class Utils {
 				pathToFiles = Files.walk(Paths.get(ramlFolderPath)).filter(Files::isRegularFile)
 						.collect(Collectors.toList());
 			else
-				Logger.log("Couldn't find a valid raml folder to load RAMLs");
+				Logger.error("Couldn't find a valid raml folder to load RAMLs");
 		} catch (IOException e) {
 			Logger.log(e);
 		}

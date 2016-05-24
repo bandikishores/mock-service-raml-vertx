@@ -20,13 +20,13 @@ public class Validator {
 		else {
 			for (ValidationResult validationResult : results) {
 				if (validationResult.getLevel() == Level.ERROR) {
-					Logger.log("RAML is not valid, contains errors : " + validationResult.getMessage());
+					Logger.error("RAML is not valid, contains errors : " + validationResult.getMessage());
 					isValid = false;
 				} else if (validationResult.getLevel() == Level.WARN) {
-					Logger.log("RAML contains warnings : " + validationResult.getMessage());
+					Logger.error("RAML contains warnings : " + validationResult.getMessage());
 					continue;
 				} else if (validationResult.getLevel() == Level.INFO) {
-					Logger.log("RAML validation info : " + validationResult.getMessage());
+					Logger.error("RAML validation info : " + validationResult.getMessage());
 					continue;
 				}
 			}
