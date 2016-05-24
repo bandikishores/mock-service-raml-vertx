@@ -16,6 +16,7 @@ import org.raml.parser.visitor.YamlDocumentBuilder;
 import org.yaml.snakeyaml.Yaml;
 
 import com.bandi.admin.AdminRoutingContext;
+import com.bandi.db.DatabaseConnection;
 import com.bandi.http.HttpRoutingContext;
 import com.bandi.log.Logger;
 import com.bandi.raml.RAMLParser;
@@ -41,6 +42,10 @@ public class HttpVerticle extends AbstractVerticle {
 		vert = vertx;
 
 		HttpServer httpServer = vertx.createHttpServer();
+		
+		DatabaseConnection.printCompleted();
+		
+		DatabaseConnection.testAllConnections();
 
 		RAMLParser ramlParser = new RAMLParser();
 		ramlParser.processRAML();
@@ -69,12 +74,17 @@ public class HttpVerticle extends AbstractVerticle {
 		adminServer.requestHandler(adminRouter::accept);
 		adminServer.listen(Constants.ADMIN_PORT);
 
-		Logger.log("Mock Service started!");
+		Logger.error("Mock Service started!");
 	}
 
 	@Override
-	public void stop(Future stopFuture) throws Exception {
-		Logger.log("Mock Service stopped!");
+	public void stop(@SuppressWarnings("rawtypes") Future stopFuture) throws Exception {
+		cleanUpResources();
+		Logger.error("Mock Service stopped!");
+	}
+
+	private void cleanUpResources() {
+		DatabaseConnection.cleanUpConnections();
 	}
 
 	private TagResolver[] defaultResolver(TagResolver[] tagResolvers) {
@@ -83,6 +93,7 @@ public class HttpVerticle extends AbstractVerticle {
 		return (TagResolver[]) ArrayUtils.addAll(defaultResolvers, tagResolvers);
 	}
 
+	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
 	private void yamlParserForExtractingExample(URL url, String ramlLocation, Resource resource) {
 		Yaml yaml = (Yaml) new YamlDocumentBuilder(Yaml.class, new DefaultResourceLoader(), defaultResolver(null))
 				.build(ramlLocation);

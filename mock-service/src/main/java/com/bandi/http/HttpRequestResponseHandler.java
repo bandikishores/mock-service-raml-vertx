@@ -1,9 +1,6 @@
 package com.bandi.http;
 
-import com.bandi.log.Logger;
-
 import io.vertx.core.Handler;
-import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.ext.web.RoutingContext;
@@ -20,7 +17,7 @@ public class HttpRequestResponseHandler implements Handler<HttpServerRequest> {
 	public void handle(HttpServerRequest request) {
 		//Logger.log("incoming request!");
 
-		Buffer fullRequestBody = Buffer.buffer();
+		// Buffer fullRequestBody = Buffer.buffer();
 		
 		if (request.method() == HttpMethod.POST) {
 		//	request.handler(new HttpPostRequestHandler(fullRequestBody));

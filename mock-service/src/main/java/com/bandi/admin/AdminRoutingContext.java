@@ -2,12 +2,11 @@ package com.bandi.admin;
 
 import javax.ws.rs.core.MediaType;
 
-import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.bandi.cache.ServerCache;
 import com.bandi.data.ServerData;
-import com.bandi.log.Logger;
 import com.bandi.util.Constants;
 
 import io.vertx.core.Handler;

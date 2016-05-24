@@ -30,8 +30,8 @@ public class HttpClientResponseHandler implements Handler<HttpClientResponse> {
 		httpClientResponse.bodyHandler(new Handler<Buffer>() {
 			@Override
 			public void handle(Buffer buffer) {
-				Logger.log("Response (" + buffer.length() + "): ");
-				Logger.log(buffer.getString(0, buffer.length()));
+				Logger.error("Response (" + buffer.length() + "): ");
+				Logger.error(buffer.getString(0, buffer.length()));
 			}
 		});
 		

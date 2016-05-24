@@ -1,18 +1,24 @@
 package com.bandi.log;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Logger {
-	
-	public static void log(String log)
-	{
-		System.out.println(log);
+
+	public static void error(String str) {
+		log.error(str);
 	}
 
 	public static void log(Exception e) {
-		e.printStackTrace();
+		log.error("Exception Occured ", e);
 	}
 
 	public static void log(Object cacheofRAML) {
-		System.out.println(cacheofRAML.toString());
+		log.debug(cacheofRAML.toString());
+	}
+
+	public static void info(String str) {
+		log.debug(str);
 	}
 
 }

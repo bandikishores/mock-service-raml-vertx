@@ -7,8 +7,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.raml.model.Action;
 import org.raml.model.ActionType;
@@ -45,14 +45,14 @@ public class RAMLParser {
 					if (raml != null) {
 						parse(raml, path.getParent().toString());
 					} else {
-						Logger.log(" Documentation not present for RAML to load example");
+						Logger.error(" Documentation not present for RAML to load example");
 					}
 				} else {
-					Logger.log("Couldn't load raml at " + ramlLocation + " as RAML is Invalid");
+					Logger.error("Couldn't load raml at " + ramlLocation + " as RAML is Invalid");
 				}
 			}
 		} else {
-			Logger.log("No RAMLs found");
+			Logger.error("No RAMLs found");
 		}
 	}
 
@@ -78,7 +78,7 @@ public class RAMLParser {
 
 			// RAMLCache.printValuesInCache();
 		} else {
-			Logger.log("No resources found in RAML file " + raml.getTitle());
+			Logger.error("No resources found in RAML file " + raml.getTitle());
 		}
 	}
 
@@ -102,7 +102,7 @@ public class RAMLParser {
 						}
 					}
 				} else {
-					Logger.log("Supported RequestMethods are Get and Post, but found " + actionType);
+					Logger.error("Supported RequestMethods are Get and Post, but found " + actionType);
 				}
 			}
 		}
@@ -121,19 +121,17 @@ public class RAMLParser {
 			// response.getBody().get(MediaType.APPLICATION_JSON).getExample();
 			for (String contentType : body.keySet()) {
 				ResponseData responseData = new ResponseData();
-				responseData.setResponseContentType(contentType);
 				responseData.setMimeType(body.get(contentType));
-				responseData.setActionType(actionType);
 
 				responseData.getMimeType()
 						.setExample(parseAndExtractExample(responseData.getMimeType().getExample(), ramlLocation));
 
-				RAMLCache.insertInToCache(uri, responseData);
+				RAMLCache.insertInToCache(uri, actionType.name(), responseData);
 				break;
 			}
 
 		} else {
-			Logger.log("response body not found");
+			Logger.error("response body not found");
 		}
 	}
 

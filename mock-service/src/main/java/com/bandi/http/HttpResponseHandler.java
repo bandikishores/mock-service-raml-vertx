@@ -28,13 +28,15 @@ public class HttpResponseHandler {
 		HttpServerResponse response = null;
 		ActionType actionType = Utils.convertHttpMethodToActionType(request.method());
 
-		String uri = Utils.convertURLToString(request.uri());
+		String uri = Utils.convertURLToPath(request.uri());
 
 		if (uri != null && RAMLCache.presentInCache(uri, actionType)) {
 			ResponseData responseData = RAMLCache.getResponseDataFromCache(uri, actionType);
 			response = createResponse(responseData);
 		} else {
 			ResponseData responseData = null;
+
+			uri = Utils.convertURLToString(request.uri());
 
 			try {
 				responseData = new HttpClientHandler(routingContext, request).getResponseDataFromServer(uri);
@@ -63,7 +65,7 @@ public class HttpResponseHandler {
 		else
 			response.setStatusCode(HttpStatus.SC_OK);
 
-		response.headers().add("Content-Type", responseData.getResponseContentType());
+		response.headers().add("Content-Type", responseData.getMimeType().getType());
 
 		String responseText = responseData.getMimeType().getExample();
 

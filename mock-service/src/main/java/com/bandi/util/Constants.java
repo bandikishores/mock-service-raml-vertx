@@ -6,6 +6,8 @@ public class Constants {
 	
 	public static final int ADMIN_PORT = 4124;
 	
+	public static final int DATABASE_PORT = 4125;
+	
 	public static final String ramlLocation = "raml/";
 	
 	public static final String ADMIN = "admin";
