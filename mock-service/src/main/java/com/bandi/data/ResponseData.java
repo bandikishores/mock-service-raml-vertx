@@ -1,6 +1,5 @@
 package com.bandi.data;
 
-import org.raml.model.ActionType;
 import org.raml.model.MimeType;
 
 import lombok.Data;
@@ -8,18 +7,16 @@ import lombok.Data;
 @Data
 public class ResponseData {
 
-	String responseContentType;
+	private int id;
 
-	ActionType actionType;
+	private MimeType mimeType;
 
-	MimeType mimeType;
-
-	Integer statusCode;
+	private Integer statusCode;
 
 	@Override
 	public String toString() {
-		return "ResponseData [responseContentType=" + responseContentType + ", actionType=" + actionType + ", mimeType="
-				+ mimeType + ", statusCode=" + statusCode + ", sampleResponse=" + mimeType.getExample() + "]";
+		return "ResponseData [id=" + id + ", mimeType=" + mimeType + ", statusCode=" + statusCode + ", sampleResponse="
+				+ mimeType.getExample() + "]";
 	}
 
 }

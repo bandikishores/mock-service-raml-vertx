@@ -121,14 +121,12 @@ public class RAMLParser {
 			// response.getBody().get(MediaType.APPLICATION_JSON).getExample();
 			for (String contentType : body.keySet()) {
 				ResponseData responseData = new ResponseData();
-				responseData.setResponseContentType(contentType);
 				responseData.setMimeType(body.get(contentType));
-				responseData.setActionType(actionType);
 
 				responseData.getMimeType()
 						.setExample(parseAndExtractExample(responseData.getMimeType().getExample(), ramlLocation));
 
-				RAMLCache.insertInToCache(uri, responseData);
+				RAMLCache.insertInToCache(uri, actionType.name(), responseData);
 				break;
 			}
 

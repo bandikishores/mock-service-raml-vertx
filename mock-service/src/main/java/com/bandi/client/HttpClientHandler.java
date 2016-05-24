@@ -143,9 +143,9 @@ public class HttpClientHandler {
 			ResponseData responseData = new ResponseData();
 			MimeType mimeType = new MimeType();
 			mimeType.setExample(EntityUtils.toString(entity));
+			mimeType.setType(entity.getContentType().getValue());
 			responseData.setMimeType(mimeType);
 			responseData.setStatusCode(httpResponse.getStatusLine().getStatusCode());
-			responseData.setResponseContentType(entity.getContentType().getValue());
 
 			EntityUtils.consume(entity);
 			countDown.countDown();

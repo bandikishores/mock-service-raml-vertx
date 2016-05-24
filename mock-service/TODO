@@ -1,0 +1,4 @@
+1) Remove String responseContentType in Response Data and Add it in URICache Object.
+2) Remove ActionType actionType in Response Data.
+3) Provide Hibernate support to access objects directly.
+4) Decide on Spring or Guice based on requirement.

@@ -65,7 +65,7 @@ public class HttpResponseHandler {
 		else
 			response.setStatusCode(HttpStatus.SC_OK);
 
-		response.headers().add("Content-Type", responseData.getResponseContentType());
+		response.headers().add("Content-Type", responseData.getMimeType().getType());
 
 		String responseText = responseData.getMimeType().getExample();
 
