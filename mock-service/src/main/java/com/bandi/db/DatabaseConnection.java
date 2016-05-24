@@ -14,6 +14,7 @@ import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.h2.tools.Server;
 
 import com.bandi.log.Logger;
 import com.bandi.util.DBConstants;
@@ -25,10 +26,33 @@ public class DatabaseConnection {
 	@PostConstruct
 	public static void printCompleted() {
 		Logger.info("Database Initialized");
+		startTCPServer();
+		Logger.info("Database TCP Instance started");
+	}
+
+	/**
+	 * Starts an instance of DB using TCP so InMemory DB can be accessed by
+	 * outside processes
+	 * 
+	 * jdbc:h2:tcp://localhost:4125/mem:mockservice
+	 */
+	private static void startTCPServer() {
+		try {
+			final String[] args = new String[] {
+						"-tcpPort", Integer.toString(DBConstants.DB_PORT)
+					};
+			tcpServer = Server.createTcpServer(args).start();
+			Logger.error("DB TCP Instance Started at URL : " + "jdbc:h2:" + tcpServer.getURL() + "/mem:mockservice");
+			// tcpServer.stop();
+		} catch (SQLException e) {
+			Logger.log(e);
+		}
 	}
 
 	@Getter(lazy = true)
 	private static final ObjectPool<PoolableConnection> connectionPool = createConnectionPool();
+	
+	private static Server tcpServer;
 
 	private static ObjectPool<PoolableConnection> createConnectionPool() {
 		// 1. Register the Driver to the jbdc.driver java property
@@ -83,12 +107,13 @@ public class DatabaseConnection {
 				statement.execute("SELECT * FROM RESPONSE_DATA");
 				ResultSet resultSet = statement.getResultSet();
 				resultSet.next();
-				Logger.error(" Result from DB Pooled Connection : " + resultSet.getString(4));
+				Logger.error(" Result from DB Pooled Connection : " + resultSet.getString(4) + " response : "
+						+ resultSet.getString(6));
 			}
 
 			try (Connection jdbcConnection = getConnection();
 					Statement jdbcStatement = jdbcConnection.createStatement();) {
-				jdbcStatement.execute("SELECT * FROM URI_CACHE");
+				jdbcStatement.execute("SELECT * FROM DUAL");
 				ResultSet resultSet = jdbcStatement.getResultSet();
 				resultSet.next();
 				Logger.error(" Result from JDBC Connection : " + resultSet.getString(1));
@@ -96,6 +121,15 @@ public class DatabaseConnection {
 		} catch (Exception e) {
 			Logger.log(e);
 		}
+	}
+
+	public static void cleanUpConnections() {
+		try {
+			((Connection) connectionPool).close();
+		} catch (SQLException e) {
+			Logger.log(e);
+		}
+		tcpServer.stop();
 	}
 
 }

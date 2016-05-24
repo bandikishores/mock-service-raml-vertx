@@ -5,8 +5,6 @@ import javax.annotation.PostConstruct;
 import com.bandi.util.Constants;
 
 import io.vertx.core.Handler;
-import io.vertx.core.http.HttpServerRequest;
-import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.rxjava.ext.web.handler.StaticHandler;
 import lombok.Getter;
@@ -26,10 +24,12 @@ public class HttpStaticHandler implements Handler<RoutingContext> {
 	@Override
 	public void handle(RoutingContext routingContext) {
 		// Logger.log("incoming Static request!");
-		HttpServerRequest request = routingContext.request();
-		HttpServerResponse response = request.response();
-		
-		// request.handler(StaticHandler.create());
+		/*		
+	 		HttpServerRequest request = routingContext.request();
+			HttpServerResponse response = request.response();
+			
+			 request.handler(StaticHandler.create());
+		 */
 		routingContext.next();
 	}
 

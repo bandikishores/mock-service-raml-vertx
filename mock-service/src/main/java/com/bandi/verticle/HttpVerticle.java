@@ -78,8 +78,13 @@ public class HttpVerticle extends AbstractVerticle {
 	}
 
 	@Override
-	public void stop(Future stopFuture) throws Exception {
+	public void stop(@SuppressWarnings("rawtypes") Future stopFuture) throws Exception {
+		cleanUpResources();
 		Logger.error("Mock Service stopped!");
+	}
+
+	private void cleanUpResources() {
+		DatabaseConnection.cleanUpConnections();
 	}
 
 	private TagResolver[] defaultResolver(TagResolver[] tagResolvers) {
@@ -88,6 +93,7 @@ public class HttpVerticle extends AbstractVerticle {
 		return (TagResolver[]) ArrayUtils.addAll(defaultResolvers, tagResolvers);
 	}
 
+	@SuppressWarnings({ "unused", "rawtypes", "unchecked" })
 	private void yamlParserForExtractingExample(URL url, String ramlLocation, Resource resource) {
 		Yaml yaml = (Yaml) new YamlDocumentBuilder(Yaml.class, new DefaultResourceLoader(), defaultResolver(null))
 				.build(ramlLocation);

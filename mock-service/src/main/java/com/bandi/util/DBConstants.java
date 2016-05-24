@@ -46,4 +46,9 @@ public class DBConstants {
 
 	public static final String FINAL_DB_URL = DBConstants.MOCKSERVICE_PUBLIC_INMEMORY_DB_URL
 			+ DBConstants.KEEP_CONNECTION_ALIVE + DBConstants.MOCKSERVICE_SCHEMA;
+
+	/**
+	 * The port which DB uses
+	 */
+	public static final int DB_PORT = Constants.DATABASE_PORT;
 }
